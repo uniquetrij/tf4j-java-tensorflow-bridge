@@ -20,6 +20,8 @@ public interface TensorflowClient {
 
     public void onModelResult(Map<String, Tensor<?>> tensors);
 
+    public TensorflowModel getModel();
+
     public default void notifyOnInputAvailable() {
         synchronized (this) {
             this.notify();

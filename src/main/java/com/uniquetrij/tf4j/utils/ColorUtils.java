@@ -159,5 +159,10 @@ public class ColorUtils {
         COLOR_LIST.put("WhiteSmoke", new Scalar(0xF5, 0xF5, 0xF5));
         COLOR_LIST.put("Yellow", new Scalar(0xFF, 0xFF, 0x00));
         COLOR_LIST.put("YellowGreen", new Scalar(0x9A, 0xCD, 0x32));
+        COLOR_LIST.put("DarkGrey", new Scalar(0xA9, 0xA9, 0xA9));
+        COLOR_LIST.put("LightGrey", new Scalar(0xD3, 0xD3, 0xD3));
+        COLOR_LIST.put("LightSlateGrey", new Scalar(0x99, 0x88, 0x77));
+        COLOR_LIST.put("SlateGrey", new Scalar(0x90, 0x80, 0x70));
+        COLOR_LIST.put("SaddleBrown", new Scalar(0x8B, 0x45, 0x13));
     }
 }

@@ -28,17 +28,15 @@ import com.uniquetrij.tf4j.TensorflowClient;
  */
 public class SimpleObjectDetector extends Thread implements TensorflowClient {
 
-    
-
     private class QItem {
 
-        public QItem(Mat mat, Map<String, Tensor<?>> inputs) {
+        public QItem(Mat mat, Map<String, Tensor<?>> map) {
             this.mat = mat;
-            this.inputs = inputs;
+            this.map = map;
         }
 
         public Mat mat;
-        public Map<String, Tensor<?>> inputs;
+        public Map<String, Tensor<?>> map;
     }
 
     private final TensorflowModel model;
@@ -50,14 +48,18 @@ public class SimpleObjectDetector extends Thread implements TensorflowClient {
     private boolean isTerminated;
 
     public SimpleObjectDetector() {
-
-        inputQ = Collections.synchronizedList(new ArrayList<>());
-        resultQ = Collections.synchronizedList(new ArrayList<>());
-        visualizeQ = Collections.synchronizedList(new ArrayList<>());
-        model = Models.MODEL_SSD_MOBILENET_V1_COCO_2017_11_17;
-
+        this(Models.MODEL_FASTER_RCNN_INCEPTION_V2_COCO_2018_01_28);
     }
 
+    public SimpleObjectDetector(TensorflowModel model) {
+
+        this.inputQ = Collections.synchronizedList(new ArrayList<>());
+        this.resultQ = Collections.synchronizedList(new ArrayList<>());
+        this.visualizeQ = Collections.synchronizedList(new ArrayList<>());
+        this.model = model;
+    }
+
+    @Override
     public TensorflowModel getModel() {
         return model;
     }
@@ -111,20 +113,20 @@ public class SimpleObjectDetector extends Thread implements TensorflowClient {
         QItem remove = inputQ.remove(0);
         resultQ.add(remove);
         inputQ.clear();
-        return remove.inputs;
+        return remove.map;
     }
 
     @Override
     public void onModelResult(Map<String, Tensor<?>> infer) {
         QItem remove = resultQ.remove(0);
-        remove.inputs = infer;
+        remove.map = infer;
         visualizeQ.add(remove);
     }
 
     public void visualize() {
         QItem inf = visualizeQ.remove(0);
         Mat image = inf.mat;
-        Map<String, Tensor<?>> infer = inf.inputs;
+        Map<String, Tensor<?>> infer = inf.map;
         float[][][] boxes = new float[1][100][4];
         infer.get("detection_boxes").expect(Float.class
         ).copyTo(boxes);
@@ -143,6 +145,5 @@ public class SimpleObjectDetector extends Thread implements TensorflowClient {
         HighGui.imshow("Simple Object Detection", image);
         HighGui.waitKey(1);
     }
-
 
 }

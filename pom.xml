@@ -8,12 +8,12 @@
     
     <dependencies>     
            
-        <dependency>
-            <!--required default for CPU environment; should be removed to be executed on GPU-->
+<!--        <dependency>
+            required default for CPU environment; should be removed to be executed on GPU
             <groupId>org.tensorflow</groupId>
             <artifactId>tensorflow</artifactId>
             <version>1.13.1</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.tensorflow</groupId>
             <artifactId>libtensorflow</artifactId>
